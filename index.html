@@ -11,14 +11,14 @@
     <!-- Title & Description -->
     <title>Thiệp Mời Hôn Lễ Hoàng Tân & Thu Hà - Save The Date 21/12/2025</title>
     <meta name="description"
-        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 01/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
+        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 02/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
 
     <!-- Open Graph / Facebook / Zalo -->
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Thiệp Mời Hôn Lễ Hoàng Tân & Thu Hà - Save The Date 21/12/2025" />
     <meta property="og:description"
-        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 01/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
+        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 02/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
     <meta property="og:url" content="https://minnggg.github.io/moicuoi" />
     <meta property="og:site_name" content="Thiệp Cưới Online" />
     <meta property="article:modified_time" content="2023-10-19T08:01:04+00:00" />
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Thiệp Mời Hôn Lễ Hoàng Tân & Thu Hà - Save The Date 21/12/2025" />
     <meta name="twitter:description"
-        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 01/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
+        content="Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 02/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!" />
     <meta name="twitter:image" content="https://github.com/Minnggg/anh/blob/main/DSC08709....jpg?raw=true" />
 
     <!-- JSON-LD / Schema.org -->
@@ -47,7 +47,7 @@
       "isPartOf":{"@id":"https://app.thiepcuoionline.net/#website"},
       "datePublished":"2023-10-11T04:24:26+00:00",
       "dateModified":"2023-10-19T08:01:04+00:00",
-      "description":"Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 01/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!",
+      "description":"Thân mời Bạn đến dự Hôn Lễ chúng mình vào ngày 21/12/2025 (Tức ngày 02/11 ÂL). Sự hiện diện của Bạn là niềm vinh hạnh của chúng mình. Rất hân hạnh được đón tiếp!",
       "breadcrumb":{"@id":"https://minnggg.github.io/moicuoi"},
       "inLanguage":"vi",
       "potentialAction":[{"@type":"ReadAction","target":["https://minnggg.github.io/moicuoi"]}]
@@ -1318,7 +1318,6 @@
                                                     value="XÁC NHẬN THAM DỰ" />
                                             </p>
                                         </div>
-                                        <div class="wpcf7-response-output" aria-hidden="true"></div>
                                     </form>
                                 </div>
 
@@ -2642,7 +2641,7 @@
                                         }
 
                                         #banner-187523610 .bg.bg-loaded {
-                                            background-image: url(https://github.com/Minnggg/anh/blob/main/DSC08969....jpg?raw=true);
+                                            background-image: url(https://github.com/Minnggg/anh/blob/main/DSC08985...jpg?raw=true);
                                         }
 
                                         #banner-187523610 .bg {
@@ -3478,7 +3477,6 @@
         // Đợi DOM load xong
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('rsvp-form-submit');
-            const responseOutput = form ? form.querySelector('.wpcf7-response-output') : null;
 
             if (!form) {
                 console.error('Form không tìm thấy!');
@@ -3504,7 +3502,7 @@
 
                 // Kiểm tra Google Script URL
                 if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === '') {
-                    showMessage('Vui lòng cấu hình Google Script URL trong file HTML!', 'error');
+                    console.error('Vui lòng cấu hình Google Script URL trong file HTML!');
                     return;
                 }
 
@@ -3520,12 +3518,12 @@
 
                 // Validate dữ liệu bắt buộc
                 if (!formData.guest_name.trim()) {
-                    showMessage('Vui lòng nhập tên của bạn!', 'error');
+                    alert('Vui lòng nhập tên của bạn!');
                     return;
                 }
 
                 if (!formData.attendance) {
-                    showMessage('Vui lòng chọn bạn sẽ đến chứ!', 'error');
+                    alert('Vui lòng chọn bạn sẽ đến chứ!');
                     return;
                 }
 
@@ -3541,8 +3539,7 @@
                 const timeout = setTimeout(() => {
                     if (!requestCompleted) {
                         requestCompleted = true;
-                        // Vì dữ liệu đã được lưu thành công (theo báo cáo), hiển thị success
-                        showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
+                        // Reset form sau khi gửi thành công
                         form.reset();
 
                         if (submitButton) {
@@ -3567,10 +3564,7 @@
 
                         if (!requestCompleted) {
                             requestCompleted = true;
-                            // Vì dùng no-cors nên không nhận được response, nhưng thường sẽ thành công
-                            showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
-
-                            // Reset form
+                            // Reset form sau khi gửi thành công
                             form.reset();
 
                             // Enable lại nút submit
@@ -3587,8 +3581,7 @@
                         if (!requestCompleted) {
                             requestCompleted = true;
                             console.error('Lỗi khi gửi dữ liệu:', error);
-                            // Vì dữ liệu đã được lưu thành công, vẫn hiển thị success
-                            showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
+                            // Reset form
                             form.reset();
 
                             // Enable lại nút submit
@@ -3599,36 +3592,6 @@
                         }
                     });
             });
-
-            // Hàm hiển thị thông báo
-            function showMessage(message, type) {
-                if (!responseOutput) return;
-
-                responseOutput.setAttribute('aria-hidden', 'false');
-                responseOutput.className = 'wpcf7-response-output';
-
-                if (type === 'success') {
-                    responseOutput.classList.add('wpcf7-mail-sent-ok');
-                    responseOutput.style.color = '#46b450';
-                    responseOutput.style.borderColor = '#46b450';
-                } else {
-                    responseOutput.classList.add('wpcf7-mail-sent-ng');
-                    responseOutput.style.color = '#dc3232';
-                    responseOutput.style.borderColor = '#dc3232';
-                }
-
-                responseOutput.textContent = message;
-                responseOutput.style.display = 'block';
-                responseOutput.style.padding = '10px';
-                responseOutput.style.marginTop = '15px';
-                responseOutput.style.borderRadius = '4px';
-
-                // Tự động ẩn sau 5 giây
-                setTimeout(() => {
-                    responseOutput.setAttribute('aria-hidden', 'true');
-                    responseOutput.style.display = 'none';
-                }, 5000);
-            }
         });
     </script>
 </body>
