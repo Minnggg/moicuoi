@@ -654,7 +654,7 @@
                     }
 
                     #banner-1983738072 .bg.bg-loaded {
-                        background-image: url(https://github.com/Minnggg/anh/blob/main/DSC08498...jpg?raw=true);
+                        background-image: url(https://github.com/Minnggg/anh/blob/main/DSC08738...jpg?raw=true);
                     }
 
                     #banner-1983738072 .overlay {
@@ -1190,8 +1190,7 @@
                                         <p role="status" aria-live="polite" aria-atomic="true"></p>
                                         <ul></ul>
                                     </div>
-                                    <form id="rsvp-form-submit" action="#" method="post"
-                                        aria-label="RSVP form">
+                                    <form id="rsvp-form-submit" action="#" method="post" aria-label="RSVP form">
                                         <div class="form-flat">
                                             <p><label>Tên của bạn (hoặc tên Facebook)?</label><br />
                                                 <input size="40" class="wpcf7-form-control wpcf7-text"
@@ -3395,40 +3394,40 @@
         // CẤU HÌNH: Thay URL này bằng Google Apps Script Web App URL của bạn
         // ============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCu7ZEbGWPWc_x8u69khlblte6mOz1fOUeaa9uIBaZsVXacHfynIjqHPej36Hcn-LI/exec'; // Paste Google Apps Script Web App URL vào đây
-        
+
         // Đợi DOM load xong
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('rsvp-form-submit');
             const responseOutput = form ? form.querySelector('.wpcf7-response-output') : null;
-            
+
             if (!form) {
                 console.error('Form không tìm thấy!');
                 return;
             }
-            
+
             // Chặn tất cả các event handler khác (Contact Form 7, etc.)
             // Bỏ class wpcf7-form để Contact Form 7 không xử lý
             form.classList.remove('wpcf7-form', 'init');
-            
+
             // Chặn tất cả các submit event khác
             const originalSubmit = form.submit;
-            form.submit = function() {
+            form.submit = function () {
                 // Chặn submit mặc định
                 return false;
             };
-            
+
             // Xử lý khi form được submit - chỉ gửi đến Google Sheets
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 e.preventDefault(); // Chặn submit mặc định
                 e.stopPropagation(); // Ngăn event bubble lên
                 e.stopImmediatePropagation(); // Ngăn các handler khác
-                
+
                 // Kiểm tra Google Script URL
                 if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === '') {
                     showMessage('Vui lòng cấu hình Google Script URL trong file HTML!', 'error');
                     return;
                 }
-                
+
                 // Lấy dữ liệu từ form
                 const formData = {
                     guest_name: form.querySelector('[name="guest_name"]')?.value || '',
@@ -3438,25 +3437,25 @@
                     plus_one: form.querySelector('[name="plus_one"]')?.value || '',
                     message: form.querySelector('[name="message"]')?.value || ''
                 };
-                
+
                 // Validate dữ liệu bắt buộc
                 if (!formData.guest_name.trim()) {
                     showMessage('Vui lòng nhập tên của bạn!', 'error');
                     return;
                 }
-                
+
                 if (!formData.attendance) {
                     showMessage('Vui lòng chọn bạn sẽ đến chứ!', 'error');
                     return;
                 }
-                
+
                 // Disable nút submit để tránh submit nhiều lần
                 const submitButton = form.querySelector('input[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
                     submitButton.value = 'Đang gửi...';
                 }
-                
+
                 // Tạo timeout để đảm bảo không bị kẹt mãi
                 let requestCompleted = false;
                 const timeout = setTimeout(() => {
@@ -3465,14 +3464,14 @@
                         // Vì dữ liệu đã được lưu thành công (theo báo cáo), hiển thị success
                         showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
                         form.reset();
-                        
+
                         if (submitButton) {
                             submitButton.disabled = false;
                             submitButton.value = 'XÁC NHẬN THAM DỰ';
                         }
                     }
                 }, 2000); // Timeout sau 2 giây
-                
+
                 // CHỈ gửi dữ liệu đến Google Sheets - không gửi đến bất kỳ service nào khác
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
@@ -3482,52 +3481,52 @@
                     },
                     body: JSON.stringify(formData)
                 })
-                .then(() => {
-                    // Clear timeout nếu request hoàn thành sớm
-                    clearTimeout(timeout);
-                    
-                    if (!requestCompleted) {
-                        requestCompleted = true;
-                        // Vì dùng no-cors nên không nhận được response, nhưng thường sẽ thành công
-                        showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
-                        
-                        // Reset form
-                        form.reset();
-                        
-                        // Enable lại nút submit
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                            submitButton.value = 'XÁC NHẬN THAM DỰ';
+                    .then(() => {
+                        // Clear timeout nếu request hoàn thành sớm
+                        clearTimeout(timeout);
+
+                        if (!requestCompleted) {
+                            requestCompleted = true;
+                            // Vì dùng no-cors nên không nhận được response, nhưng thường sẽ thành công
+                            showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
+
+                            // Reset form
+                            form.reset();
+
+                            // Enable lại nút submit
+                            if (submitButton) {
+                                submitButton.disabled = false;
+                                submitButton.value = 'XÁC NHẬN THAM DỰ';
+                            }
                         }
-                    }
-                })
-                .catch((error) => {
-                    // Clear timeout
-                    clearTimeout(timeout);
-                    
-                    if (!requestCompleted) {
-                        requestCompleted = true;
-                        console.error('Lỗi khi gửi dữ liệu:', error);
-                        // Vì dữ liệu đã được lưu thành công, vẫn hiển thị success
-                        showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
-                        form.reset();
-                        
-                        // Enable lại nút submit
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                            submitButton.value = 'XÁC NHẬN THAM DỰ';
+                    })
+                    .catch((error) => {
+                        // Clear timeout
+                        clearTimeout(timeout);
+
+                        if (!requestCompleted) {
+                            requestCompleted = true;
+                            console.error('Lỗi khi gửi dữ liệu:', error);
+                            // Vì dữ liệu đã được lưu thành công, vẫn hiển thị success
+                            showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
+                            form.reset();
+
+                            // Enable lại nút submit
+                            if (submitButton) {
+                                submitButton.disabled = false;
+                                submitButton.value = 'XÁC NHẬN THAM DỰ';
+                            }
                         }
-                    }
-                });
+                    });
             });
-            
+
             // Hàm hiển thị thông báo
             function showMessage(message, type) {
                 if (!responseOutput) return;
-                
+
                 responseOutput.setAttribute('aria-hidden', 'false');
                 responseOutput.className = 'wpcf7-response-output';
-                
+
                 if (type === 'success') {
                     responseOutput.classList.add('wpcf7-mail-sent-ok');
                     responseOutput.style.color = '#46b450';
@@ -3537,13 +3536,13 @@
                     responseOutput.style.color = '#dc3232';
                     responseOutput.style.borderColor = '#dc3232';
                 }
-                
+
                 responseOutput.textContent = message;
                 responseOutput.style.display = 'block';
                 responseOutput.style.padding = '10px';
                 responseOutput.style.marginTop = '15px';
                 responseOutput.style.borderRadius = '4px';
-                
+
                 // Tự động ẩn sau 5 giây
                 setTimeout(() => {
                     responseOutput.setAttribute('aria-hidden', 'true');
