@@ -1190,7 +1190,7 @@
                                         <p role="status" aria-live="polite" aria-atomic="true"></p>
                                         <ul></ul>
                                     </div>
-                                    <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="post"
+                                    <form id="rsvp-form-submit" action="https://formsubmit.co/YOUR_EMAIL_HERE" method="post"
                                         class="wpcf7-form init" aria-label="RSVP form" data-status="init">
                                         <input type="hidden" name="_subject" value="RSVP - Hoang Hai &amp; Kim Duyen" />
                                         <input type="hidden" name="_captcha" value="false" />
@@ -3391,6 +3391,129 @@
         data-cf-beacon='{"version":"2024.11.0","token":"2ee95f5b7c5848d6a3312348e89f6ab3","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
         crossorigin="anonymous"></script>
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9a407990edd8854e',t:'MTc2NDA2NjY3MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+
+    <!-- Google Sheets Form Handler -->
+    <script>
+        // ============================================
+        // CẤU HÌNH: Thay URL này bằng Google Apps Script Web App URL của bạn
+        // ============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCu7ZEbGWPWc_x8u69khlblte6mOz1fOUeaa9uIBaZsVXacHfynIjqHPej36Hcn-LI/exec'; // Paste Google Apps Script Web App URL vào đây
+        
+        // Đợi DOM load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('rsvp-form-submit');
+            const responseOutput = form ? form.querySelector('.wpcf7-response-output') : null;
+            
+            if (!form) {
+                console.error('Form không tìm thấy!');
+                return;
+            }
+            
+            // Xử lý khi form được submit
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Chặn submit mặc định
+                
+                // Kiểm tra Google Script URL
+                if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === '') {
+                    showMessage('Vui lòng cấu hình Google Script URL trong file HTML!', 'error');
+                    return;
+                }
+                
+                // Lấy dữ liệu từ form
+                const formData = {
+                    guest_name: form.querySelector('[name="guest_name"]')?.value || '',
+                    attendance: form.querySelector('[name="attendance"]')?.value || '',
+                    event_slot: form.querySelector('[name="event_slot"]:checked')?.value || '',
+                    invited_by: form.querySelector('[name="invited_by"]:checked')?.value || '',
+                    plus_one: form.querySelector('[name="plus_one"]')?.value || '',
+                    message: form.querySelector('[name="message"]')?.value || ''
+                };
+                
+                // Validate dữ liệu bắt buộc
+                if (!formData.guest_name.trim()) {
+                    showMessage('Vui lòng nhập tên của bạn!', 'error');
+                    return;
+                }
+                
+                if (!formData.attendance) {
+                    showMessage('Vui lòng chọn bạn sẽ đến chứ!', 'error');
+                    return;
+                }
+                
+                // Disable nút submit để tránh submit nhiều lần
+                const submitButton = form.querySelector('input[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.value = 'Đang gửi...';
+                }
+                
+                // Gửi dữ liệu đến Google Sheets
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script cần no-cors
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(() => {
+                    // Vì dùng no-cors nên không nhận được response, nhưng thường sẽ thành công
+                    showMessage('Cảm ơn bạn! Thông tin đã được gửi thành công! 🎉', 'success');
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Enable lại nút submit sau 2 giây
+                    setTimeout(() => {
+                        if (submitButton) {
+                            submitButton.disabled = false;
+                            submitButton.value = 'XÁC NHẬN THAM DỰ';
+                        }
+                    }, 2000);
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi gửi dữ liệu:', error);
+                    showMessage('Có lỗi xảy ra khi gửi dữ liệu. Vui lòng thử lại!', 'error');
+                    
+                    // Enable lại nút submit
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.value = 'XÁC NHẬN THAM DỰ';
+                    }
+                });
+            });
+            
+            // Hàm hiển thị thông báo
+            function showMessage(message, type) {
+                if (!responseOutput) return;
+                
+                responseOutput.setAttribute('aria-hidden', 'false');
+                responseOutput.className = 'wpcf7-response-output';
+                
+                if (type === 'success') {
+                    responseOutput.classList.add('wpcf7-mail-sent-ok');
+                    responseOutput.style.color = '#46b450';
+                    responseOutput.style.borderColor = '#46b450';
+                } else {
+                    responseOutput.classList.add('wpcf7-mail-sent-ng');
+                    responseOutput.style.color = '#dc3232';
+                    responseOutput.style.borderColor = '#dc3232';
+                }
+                
+                responseOutput.textContent = message;
+                responseOutput.style.display = 'block';
+                responseOutput.style.padding = '10px';
+                responseOutput.style.marginTop = '15px';
+                responseOutput.style.borderRadius = '4px';
+                
+                // Tự động ẩn sau 5 giây
+                setTimeout(() => {
+                    responseOutput.setAttribute('aria-hidden', 'true');
+                    responseOutput.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 
 </html>
